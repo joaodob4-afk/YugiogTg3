@@ -15,7 +15,7 @@ jobs:
 
       - name: Extrair projeto
         run: |
-          unzip -o YugiohTG3-project.zip
+          unzip -o YugiohTG3-v2.zip
           ls -la YugiohTG3
 
       - name: Configurar Java
