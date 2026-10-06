@@ -10,8 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Baixar projeto
+      - name: Baixar arquivos
         uses: actions/checkout@v4
+
+      - name: Extrair projeto
+        run: |
+          unzip -o YugiohTG3-project.zip
+          ls -la YugiohTG3
 
       - name: Configurar Java
         uses: actions/setup-java@v4
@@ -19,16 +24,17 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Configurar Android
-        uses: android-actions/setup-android@v3
+      - name: Instalar Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
 
       - name: Compilar APK
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug
+        working-directory: YugiohTG3
+        run: gradle assembleDebug --no-daemon
 
       - name: Disponibilizar APK
         uses: actions/upload-artifact@v4
         with:
           name: Yugioh-TG3-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: YugiohTG3/app/build/outputs/apk/debug/app-debug.apk
